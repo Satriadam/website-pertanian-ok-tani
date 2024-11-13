@@ -1,11 +1,32 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  const handleLogin = () => {
+    if (!email) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Mohon masukkan alamat email",
+      });
+      return;
+    }
+    
+    // Simulasi login berhasil
+    toast({
+      title: "Login berhasil",
+      description: "Selamat datang kembali!",
+    });
+    navigate("/home");
+  };
   
   return (
     <div className="min-h-screen bg-forest text-white p-6 animate-fade-in">
@@ -33,6 +54,7 @@ const Login = () => {
             
             <Button 
               className="w-full bg-leaf text-forest hover:bg-leaf/90"
+              onClick={handleLogin}
             >
               LANJUTKAN
             </Button>
