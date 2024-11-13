@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Home, Bell, User, Cloud, Calendar, Sprout } from "lucide-react";
+import { Home, Bell, Settings2, Cloud, Calendar, Sprout } from "lucide-react";
 
 const HomePage = () => {
   return (
@@ -42,8 +42,8 @@ const HomePage = () => {
           <Link to="/notifications" className="text-white/60 hover:text-white">
             <Bell className="w-6 h-6" />
           </Link>
-          <Link to="/profile" className="text-white/60 hover:text-white">
-            <User className="w-6 h-6" />
+          <Link to="/settings" className="text-white/60 hover:text-white">
+            <Settings2 className="w-6 h-6" />
           </Link>
         </div>
       </nav>

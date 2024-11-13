@@ -9,6 +9,8 @@ import Home from "./pages/Home";
 import Consultation from "./pages/Consultation";
 import Weather from "./pages/Weather";
 import GardenCalendar from "./pages/GardenCalendar";
+import Notifications from "./pages/Notifications";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +27,8 @@ const App = () => (
           <Route path="/consultation" element={<Consultation />} />
           <Route path="/weather" element={<Weather />} />
           <Route path="/calendar" element={<GardenCalendar />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
