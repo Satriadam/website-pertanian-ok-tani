@@ -4,6 +4,8 @@ import { ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { auth, googleProvider } from "@/lib/firebase";
+import { signInWithPopup } from "firebase/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -25,6 +27,23 @@ const Login = () => {
       description: "Selamat datang kembali!",
     });
     navigate("/home");
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      toast({
+        title: "Login berhasil",
+        description: "Selamat datang, " + result.user.displayName,
+      });
+      navigate("/home");
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Gagal login dengan Google",
+      });
+    }
   };
   
   return (
@@ -94,14 +113,13 @@ const Login = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <button className="p-2 bg-white/10 rounded-lg hover:bg-white/20 flex items-center justify-center gap-2">
+              <div className="grid grid-cols-1 gap-4">
+                <button 
+                  onClick={handleGoogleSignIn}
+                  className="p-2 bg-white/10 rounded-lg hover:bg-white/20 flex items-center justify-center gap-2"
+                >
                   <img src="/google.svg" alt="Google" className="w-5 h-5" />
                   <span>Google</span>
-                </button>
-                <button className="p-2 bg-white/10 rounded-lg hover:bg-white/20 flex items-center justify-center gap-2">
-                  <img src="/apple.svg" alt="Apple" className="w-5 h-5" />
-                  <span>Apple</span>
                 </button>
               </div>
             </div>

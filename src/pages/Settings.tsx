@@ -1,14 +1,28 @@
-import { Settings2 } from "lucide-react";
+import { Settings2, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 
 const Settings = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-forest text-white p-6 animate-fade-in">
       <div className="max-w-md mx-auto space-y-8">
-        <h1 className="text-4xl font-bold flex items-center gap-2">
-          <Settings2 className="w-8 h-8" />
-          Pengaturan
-        </h1>
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate(-1)}
+            className="text-white hover:text-white/80"
+          >
+            <ArrowLeft className="w-6 h-6" />
+          </Button>
+          <h1 className="text-4xl font-bold flex items-center gap-2">
+            <Settings2 className="w-8 h-8" />
+            Pengaturan
+          </h1>
+        </div>
         
         <div className="space-y-6">
           <div className="space-y-4">
