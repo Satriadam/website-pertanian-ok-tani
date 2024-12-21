@@ -3,7 +3,7 @@ import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
 // Replace these with your actual Firebase config values from your Firebase Console
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY || "YOUR_API_KEY",
+  apiKey: "YOUR_API_KEY",
   authDomain: "YOUR_PROJECT.firebaseapp.com",
   projectId: "YOUR_PROJECT_ID",
   storageBucket: "YOUR_PROJECT.appspot.com",
@@ -11,10 +11,13 @@ const firebaseConfig = {
   appId: "YOUR_APP_ID"
 };
 
+let auth;
+let googleProvider;
+
 try {
   const app = initializeApp(firebaseConfig);
-  export const auth = getAuth(app);
-  export const googleProvider = new GoogleAuthProvider();
+  auth = getAuth(app);
+  googleProvider = new GoogleAuthProvider();
 
   // Add error handling for initialization
   auth.onAuthStateChanged((user) => {
@@ -27,3 +30,5 @@ try {
   console.error("Error initializing Firebase:", error);
   throw new Error("Failed to initialize Firebase. Please check your configuration.");
 }
+
+export { auth, googleProvider };
