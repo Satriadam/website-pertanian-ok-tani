@@ -5,31 +5,47 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { auth, googleProvider } from "@/lib/firebase";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  const handleLogin = () => {
-    if (!email) {
+  const handleLogin = async () => {
+    if (!email || !password) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Mohon masukkan alamat email",
+        description: "Mohon masukkan email dan password",
       });
       return;
     }
     
-    toast({
-      title: "Login berhasil",
-      description: "Selamat datang kembali!",
-    });
-    navigate("/home");
+    setIsLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      toast({
+        title: "Login berhasil",
+        description: "Selamat datang kembali!",
+      });
+      navigate("/home");
+    } catch (error) {
+      console.error("Login error:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Gagal login. Periksa email dan password anda.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGoogleSignIn = async () => {
+    setIsLoading(true);
     try {
       const result = await signInWithPopup(auth, googleProvider);
       toast({
@@ -38,11 +54,14 @@ const Login = () => {
       });
       navigate("/home");
     } catch (error) {
+      console.error("Google sign-in error:", error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Gagal login dengan Google",
+        description: "Gagal login dengan Google. Silakan coba lagi.",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
   
@@ -70,6 +89,7 @@ const Login = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-white/10 border-white/20"
                   placeholder="Masukkan email anda"
+                  disabled={isLoading}
                 />
               </div>
               
@@ -77,8 +97,11 @@ const Login = () => {
                 <label className="text-sm">Password</label>
                 <Input
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="bg-white/10 border-white/20"
                   placeholder="Masukkan password anda"
+                  disabled={isLoading}
                 />
               </div>
 
@@ -91,8 +114,9 @@ const Login = () => {
               <Button 
                 className="w-full bg-leaf text-forest hover:bg-leaf/90"
                 onClick={handleLogin}
+                disabled={isLoading}
               >
-                MASUK
+                {isLoading ? "LOADING..." : "MASUK"}
               </Button>
 
               <div className="text-center">
@@ -116,10 +140,11 @@ const Login = () => {
               <div className="grid grid-cols-1 gap-4">
                 <button 
                   onClick={handleGoogleSignIn}
-                  className="p-2 bg-white/10 rounded-lg hover:bg-white/20 flex items-center justify-center gap-2"
+                  disabled={isLoading}
+                  className="p-2 bg-white/10 rounded-lg hover:bg-white/20 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <img src="/google.svg" alt="Google" className="w-5 h-5" />
-                  <span>Google</span>
+                  <span>{isLoading ? "Loading..." : "Google"}</span>
                 </button>
               </div>
             </div>
