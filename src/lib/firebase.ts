@@ -1,20 +1,29 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
+// Replace these with your actual Firebase config values from your Firebase Console
 const firebaseConfig = {
-  apiKey: "AIzaSyDYDxI6BqQOGPPKhvtKQJtXxXhLQfZQVxY",
-  authDomain: "lovable-garden.firebaseapp.com",
-  projectId: "lovable-garden",
-  storageBucket: "lovable-garden.appspot.com",
-  messagingSenderId: "1234567890",
-  appId: "1:1234567890:web:abcdef1234567890"
+  apiKey: process.env.FIREBASE_API_KEY || "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const googleProvider = new GoogleAuthProvider();
+try {
+  const app = initializeApp(firebaseConfig);
+  export const auth = getAuth(app);
+  export const googleProvider = new GoogleAuthProvider();
 
-// Add error handling for initialization
-auth.onAuthStateChanged((user) => {
-  console.log("Auth state changed:", user ? "User logged in" : "User logged out");
-});
+  // Add error handling for initialization
+  auth.onAuthStateChanged((user) => {
+    console.log("Auth state changed:", user ? "User logged in" : "User logged out");
+  });
+
+  // Log initialization success
+  console.log("Firebase initialized successfully");
+} catch (error) {
+  console.error("Error initializing Firebase:", error);
+  throw new Error("Failed to initialize Firebase. Please check your configuration.");
+}
